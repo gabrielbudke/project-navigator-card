@@ -34,18 +34,18 @@ const Index = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-grayscale-5 p-8">
+    <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
       <div className="max-w-4xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-h2-bold font-inter text-grayscale-100">
+        <header className="mb-6 sm:mb-8">
+          <h1 className="text-h3-bold sm:text-h2-bold font-inter text-grayscale-100">
             Projetos
           </h1>
-          <p className="text-label font-open-sans text-grayscale-60 mt-1">
+          <p className="text-small sm:text-label font-open-sans text-grayscale-60 mt-1">
             Acompanhe o status e progresso dos projetos
           </p>
         </header>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {projects.map((project, index) => (
             <ProjectCard
               key={index}

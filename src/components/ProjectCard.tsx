@@ -35,17 +35,18 @@ const statusBadgeColors: Record<ProjectStatus, string> = {
 };
 
 const PROJECT_STEPS = [
-  "Pré Iniciação",
-  "Iniciação",
-  "Planejamento",
-  "Execução",
-  "Encerramento",
-  "Encerrado",
+  { full: "Pré Iniciação", short: "Pré Inic." },
+  { full: "Iniciação", short: "Iniciação" },
+  { full: "Planejamento", short: "Planej." },
+  { full: "Execução", short: "Execução" },
+  { full: "Encerramento", short: "Encerr." },
+  { full: "Encerrado", short: "Encerr." },
 ];
 
 const getSteps = (currentStep: number): Step[] => {
-  return PROJECT_STEPS.map((label, index) => ({
-    label,
+  return PROJECT_STEPS.map((step, index) => ({
+    label: step.full,
+    shortLabel: step.short,
     status:
       index < currentStep
         ? "completed"
@@ -74,36 +75,64 @@ const ProjectCard = ({
       )}
     >
       {/* Header */}
-      <div className="p-4 flex items-start gap-3">
-        <div className="w-10 h-10 rounded-full bg-grayscale-10 flex items-center justify-center flex-shrink-0">
-          <Rocket className="w-5 h-5 text-grayscale-70" />
+      <div className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-3">
+        {/* Mobile: Badge on top right */}
+        <div className="flex items-start justify-between sm:hidden">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full bg-grayscale-10 flex items-center justify-center flex-shrink-0">
+              <Rocket className="w-4 h-4 text-grayscale-70" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-label-bold font-inter text-grayscale-100 truncate">
+                {title}
+              </h3>
+              <p className="text-small font-open-sans text-grayscale-60 truncate">
+                {subtitle}
+              </p>
+            </div>
+          </div>
+          <span
+            className={cn(
+              "px-2 py-0.5 rounded text-[10px] font-bold font-open-sans flex-shrink-0",
+              statusBadgeColors[status]
+            )}
+          >
+            {statusLabels[status]}
+          </span>
         </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-h3-bold font-inter text-grayscale-100 truncate">
-            {title}
-          </h3>
-          <p className="text-small font-open-sans text-grayscale-60">
-            {subtitle}
-          </p>
+
+        {/* Desktop: Original layout */}
+        <div className="hidden sm:flex sm:items-start sm:gap-3 sm:flex-1">
+          <div className="w-10 h-10 rounded-full bg-grayscale-10 flex items-center justify-center flex-shrink-0">
+            <Rocket className="w-5 h-5 text-grayscale-70" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-h3-bold font-inter text-grayscale-100 truncate">
+              {title}
+            </h3>
+            <p className="text-small font-open-sans text-grayscale-60">
+              {subtitle}
+            </p>
+          </div>
+          <span
+            className={cn(
+              "px-2 py-1 rounded text-small-bold font-open-sans flex-shrink-0",
+              statusBadgeColors[status]
+            )}
+          >
+            {statusLabels[status]}
+          </span>
         </div>
-        <span
-          className={cn(
-            "px-2 py-1 rounded text-small-bold font-open-sans flex-shrink-0",
-            statusBadgeColors[status]
-          )}
-        >
-          {statusLabels[status]}
-        </span>
       </div>
 
       {/* Stepper */}
-      <div className="px-4 pb-4">
+      <div className="px-3 pb-3 sm:px-4 sm:pb-4">
         <ProjectStepper steps={steps} />
       </div>
 
       {/* Slot Content */}
       {children && (
-        <div className="bg-grayscale-5 p-6">
+        <div className="bg-grayscale-5 p-4 sm:p-6">
           {children}
         </div>
       )}
