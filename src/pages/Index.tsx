@@ -1,13 +1,63 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import ProjectCard, { ProjectStatus } from "@/components/ProjectCard";
 
 const Index = () => {
+  const projects: Array<{
+    title: string;
+    subtitle: string;
+    status: ProjectStatus;
+    currentStep: number;
+  }> = [
+    {
+      title: "00001-HCM-PETROBRAS-SAP",
+      subtitle: "Implantação SAP SuccessFactors",
+      status: "stable",
+      currentStep: 3,
+    },
+    {
+      title: "00002-HCM-VALE-FOLHA",
+      subtitle: "Modernização Folha de Pagamento",
+      status: "warning",
+      currentStep: 2,
+    },
+    {
+      title: "00003-HCM-AMBEV-RH",
+      subtitle: "Gestão de Talentos",
+      status: "critical",
+      currentStep: 4,
+    },
+    {
+      title: "00004-HCM-ITAU-BENEFICIOS",
+      subtitle: "Portal de Benefícios",
+      status: "outdated",
+      currentStep: 5,
+    },
+  ];
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <main className="min-h-screen bg-grayscale-5 p-8">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-8">
+          <h1 className="text-h2-bold font-inter text-grayscale-100">
+            Projetos
+          </h1>
+          <p className="text-label font-open-sans text-grayscale-60 mt-1">
+            Acompanhe o status e progresso dos projetos
+          </p>
+        </header>
+
+        <div className="space-y-4">
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={index}
+              title={project.title}
+              subtitle={project.subtitle}
+              status={project.status}
+              currentStep={project.currentStep}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
