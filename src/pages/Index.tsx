@@ -8,6 +8,7 @@ const Index = () => {
     subtitle: string;
     status: ProjectStatus;
     currentStep: number;
+    stepWarnings?: number[];
     progress: number;
     progressVariant: ProgressVariant;
   }> = [
@@ -24,6 +25,7 @@ const Index = () => {
       subtitle: "Modernização Folha de Pagamento",
       status: "warning",
       currentStep: 2,
+      stepWarnings: [1],
       progress: 35,
       progressVariant: "warning",
     },
@@ -32,6 +34,7 @@ const Index = () => {
       subtitle: "Gestão de Talentos",
       status: "critical",
       currentStep: 4,
+      stepWarnings: [2, 3],
       progress: 15,
       progressVariant: "critical",
     },
@@ -69,6 +72,7 @@ const Index = () => {
               subtitle={project.subtitle}
               status={project.status}
               currentStep={project.currentStep}
+              stepWarnings={project.stepWarnings}
               progress={project.progress}
               progressVariant={project.progressVariant}
               onDetailsClick={() => handleDetailsClick(project.title)}

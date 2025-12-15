@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { Check, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type StepStatus = "completed" | "current" | "inactive";
@@ -7,6 +7,7 @@ export interface Step {
   label: string;
   shortLabel?: string;
   status: StepStatus;
+  hasWarning?: boolean;
 }
 
 interface ProjectStepperProps {
@@ -37,19 +38,22 @@ const ProjectStepper = ({ steps, className }: ProjectStepperProps) => {
               {/* Circle */}
               <div
                 className={cn(
-                  "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-small font-open-sans border-2 transition-colors flex-shrink-0 bg-background z-10",
-                  step.status === "completed" && "bg-primary border-primary",
-                  step.status === "current" && "bg-background border-primary",
-                  step.status === "inactive" && "bg-background border-grayscale-20"
+                  "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-small font-open-sans border-2 transition-colors flex-shrink-0 z-10",
+                  step.hasWarning && "bg-status-warning border-status-warning",
+                  !step.hasWarning && step.status === "completed" && "bg-grayscale-60 border-grayscale-60",
+                  !step.hasWarning && step.status === "current" && "bg-background border-grayscale-60",
+                  !step.hasWarning && step.status === "inactive" && "bg-background border-grayscale-20"
                 )}
               >
-                {step.status === "completed" ? (
-                  <Check className="w-4 h-4 sm:w-4 sm:h-4 text-primary-foreground" strokeWidth={3} />
+                {step.hasWarning ? (
+                  <AlertTriangle className="w-4 h-4 text-white" strokeWidth={2.5} />
+                ) : step.status === "completed" ? (
+                  <Check className="w-4 h-4 text-white" strokeWidth={3} />
                 ) : (
                   <span
                     className={cn(
                       "text-xs sm:text-small font-semibold",
-                      step.status === "current" && "text-primary",
+                      step.status === "current" && "text-grayscale-60",
                       step.status === "inactive" && "text-grayscale-40"
                     )}
                   >
@@ -64,7 +68,7 @@ const ProjectStepper = ({ steps, className }: ProjectStepperProps) => {
                   <div
                     className={cn(
                       "h-full w-full transition-colors",
-                      step.status === "completed" ? "bg-primary" : "bg-grayscale-20"
+                      step.status === "completed" ? "bg-grayscale-60" : "bg-grayscale-20"
                     )}
                   />
                 </div>
@@ -93,9 +97,10 @@ const ProjectStepper = ({ steps, className }: ProjectStepperProps) => {
                 className={cn(
                   "text-[10px] sm:text-small font-open-sans leading-tight",
                   "max-w-[55px] sm:max-w-[80px]",
-                  step.status === "completed" && "text-grayscale-100 font-semibold",
-                  step.status === "current" && "text-grayscale-100 font-semibold",
-                  step.status === "inactive" && "text-grayscale-40"
+                  step.hasWarning && "text-status-warning font-semibold",
+                  !step.hasWarning && step.status === "completed" && "text-grayscale-100 font-semibold",
+                  !step.hasWarning && step.status === "current" && "text-grayscale-100 font-semibold",
+                  !step.hasWarning && step.status === "inactive" && "text-grayscale-40"
                 )}
               >
                 <span className="hidden sm:inline">{step.label}</span>
