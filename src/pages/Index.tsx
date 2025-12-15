@@ -1,6 +1,6 @@
 import ProjectCard, { ProjectStatus } from "@/components/ProjectCard";
 import { ProgressVariant } from "@/components/ProgressBar";
-import PageHeader from "@/components/PageHeader";
+import Header from "@/components/Header";
 import { toast } from "sonner";
 
 const Index = () => {
@@ -62,7 +62,7 @@ const Index = () => {
   return (
     <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
       <div className="max-w-4xl mx-auto">
-        <PageHeader title="Meus Projetos" breadcrumbs={breadcrumbs} />
+        <Header title="Meus Projetos" breadcrumbs={breadcrumbs} />
 
         <div className="space-y-3 sm:space-y-4">
           {projects.map((project, index) => (
