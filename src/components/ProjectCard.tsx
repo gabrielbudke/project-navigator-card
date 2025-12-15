@@ -11,6 +11,7 @@ interface ProjectCardProps {
   subtitle: string;
   status: ProjectStatus;
   currentStep: number;
+  stepWarnings?: number[];
   progress?: number;
   progressVariant?: ProgressVariant;
   className?: string;
@@ -48,7 +49,7 @@ const PROJECT_STEPS = [
   { full: "Encerrado", short: "Encerr." },
 ];
 
-const getSteps = (currentStep: number): Step[] => {
+const getSteps = (currentStep: number, stepWarnings: number[] = []): Step[] => {
   return PROJECT_STEPS.map((step, index) => ({
     label: step.full,
     shortLabel: step.short,
@@ -58,6 +59,7 @@ const getSteps = (currentStep: number): Step[] => {
         : index === currentStep
         ? "current"
         : "inactive",
+    hasWarning: stepWarnings.includes(index),
   }));
 };
 
@@ -66,13 +68,14 @@ const ProjectCard = ({
   subtitle,
   status,
   currentStep,
+  stepWarnings = [],
   progress,
   progressVariant = "primary",
   className,
   onDetailsClick,
   children,
 }: ProjectCardProps) => {
-  const steps = getSteps(currentStep);
+  const steps = getSteps(currentStep, stepWarnings);
 
   return (
     <div
