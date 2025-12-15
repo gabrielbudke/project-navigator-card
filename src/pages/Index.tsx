@@ -1,4 +1,6 @@
 import ProjectCard, { ProjectStatus } from "@/components/ProjectCard";
+import { ProgressVariant } from "@/components/ProgressBar";
+import { toast } from "sonner";
 
 const Index = () => {
   const projects: Array<{
@@ -6,32 +8,46 @@ const Index = () => {
     subtitle: string;
     status: ProjectStatus;
     currentStep: number;
+    progress: number;
+    progressVariant: ProgressVariant;
   }> = [
     {
       title: "00001-HCM-PETROBRAS-SAP",
       subtitle: "Implantação SAP SuccessFactors",
       status: "stable",
       currentStep: 3,
+      progress: 65,
+      progressVariant: "stable",
     },
     {
       title: "00002-HCM-VALE-FOLHA",
       subtitle: "Modernização Folha de Pagamento",
       status: "warning",
       currentStep: 2,
+      progress: 35,
+      progressVariant: "warning",
     },
     {
       title: "00003-HCM-AMBEV-RH",
       subtitle: "Gestão de Talentos",
       status: "critical",
       currentStep: 4,
+      progress: 15,
+      progressVariant: "critical",
     },
     {
       title: "00004-HCM-ITAU-BENEFICIOS",
       subtitle: "Portal de Benefícios",
       status: "outdated",
       currentStep: 5,
+      progress: 80,
+      progressVariant: "primary",
     },
   ];
+
+  const handleDetailsClick = (title: string) => {
+    toast.info(`Ver detalhes de: ${title}`);
+  };
 
   return (
     <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
@@ -53,6 +69,9 @@ const Index = () => {
               subtitle={project.subtitle}
               status={project.status}
               currentStep={project.currentStep}
+              progress={project.progress}
+              progressVariant={project.progressVariant}
+              onDetailsClick={() => handleDetailsClick(project.title)}
             />
           ))}
         </div>

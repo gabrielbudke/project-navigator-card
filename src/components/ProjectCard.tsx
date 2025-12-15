@@ -1,6 +1,8 @@
-import { Rocket } from "lucide-react";
+import { Rocket, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 import ProjectStepper, { Step } from "./ProjectStepper";
+import ProgressBar, { ProgressVariant } from "./ProgressBar";
 
 export type ProjectStatus = "stable" | "warning" | "critical" | "outdated";
 
@@ -9,7 +11,10 @@ interface ProjectCardProps {
   subtitle: string;
   status: ProjectStatus;
   currentStep: number;
+  progress?: number;
+  progressVariant?: ProgressVariant;
   className?: string;
+  onDetailsClick?: () => void;
   children?: React.ReactNode;
 }
 
@@ -35,7 +40,7 @@ const statusBadgeColors: Record<ProjectStatus, string> = {
 };
 
 const PROJECT_STEPS = [
-  { full: "Pré Iniciação", short: "Pré Inic." },
+  { full: "Pré-Iniciação", short: "Pré-Inic." },
   { full: "Iniciação", short: "Iniciação" },
   { full: "Planejamento", short: "Planej." },
   { full: "Execução", short: "Execução" },
@@ -61,7 +66,10 @@ const ProjectCard = ({
   subtitle,
   status,
   currentStep,
+  progress,
+  progressVariant = "primary",
   className,
+  onDetailsClick,
   children,
 }: ProjectCardProps) => {
   const steps = getSteps(currentStep);
@@ -128,6 +136,26 @@ const ProjectCard = ({
       {/* Stepper */}
       <div className="px-3 pb-3 sm:px-4 sm:pb-4">
         <ProjectStepper steps={steps} />
+      </div>
+
+      {/* Progress Bar */}
+      {progress !== undefined && (
+        <div className="px-3 pb-3 sm:px-4 sm:pb-4">
+          <ProgressBar value={progress} variant={progressVariant} />
+        </div>
+      )}
+
+      {/* Details Button */}
+      <div className="px-3 pb-3 sm:px-4 sm:pb-4">
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full sm:w-auto font-open-sans text-small border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+          onClick={onDetailsClick}
+        >
+          Ver Detalhes
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </Button>
       </div>
 
       {/* Slot Content */}
