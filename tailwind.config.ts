@@ -13,6 +13,23 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+        'open-sans': ['Open Sans', 'sans-serif'],
+      },
+      fontSize: {
+        'h1': ['40px', { lineHeight: '130%', fontWeight: '700' }],
+        'h2': ['24px', { lineHeight: '150%', fontWeight: '400' }],
+        'h2-alt': ['20px', { lineHeight: '150%', fontWeight: '400' }],
+        'h2-bold': ['20px', { lineHeight: '150%', fontWeight: '700' }],
+        'h3': ['16px', { lineHeight: '150%', fontWeight: '400' }],
+        'h3-bold': ['16px', { lineHeight: '150%', fontWeight: '700' }],
+        'label': ['14px', { lineHeight: '150%', fontWeight: '400' }],
+        'label-bold': ['14px', { lineHeight: '150%', fontWeight: '700' }],
+        'small': ['12px', { lineHeight: '150%', fontWeight: '400' }],
+        'small-bold': ['12px', { lineHeight: '150%', fontWeight: '700' }],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +74,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        grayscale: {
+          100: "hsl(var(--grayscale-100))",
+          90: "hsl(var(--grayscale-90))",
+          80: "hsl(var(--grayscale-80))",
+          70: "hsl(var(--grayscale-70))",
+          60: "hsl(var(--grayscale-60))",
+          50: "hsl(var(--grayscale-50))",
+          40: "hsl(var(--grayscale-40))",
+          30: "hsl(var(--grayscale-30))",
+          20: "hsl(var(--grayscale-20))",
+          10: "hsl(var(--grayscale-10))",
+          5: "hsl(var(--grayscale-5))",
+          0: "hsl(var(--grayscale-0))",
+        },
+        status: {
+          stable: "hsl(var(--status-stable))",
+          warning: "hsl(var(--status-warning))",
+          critical: "hsl(var(--status-critical))",
+          outdated: "hsl(var(--status-outdated))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,20 +102,12 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
