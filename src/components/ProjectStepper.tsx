@@ -39,7 +39,7 @@ const ProjectStepper = ({ steps, className }: ProjectStepperProps) => {
               <div
                 className={cn(
                   "w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-small font-open-sans border-2 transition-colors flex-shrink-0 z-10",
-                  step.hasWarning && "bg-status-warning border-status-warning",
+                  step.hasWarning && "bg-grayscale-40 border-grayscale-40",
                   !step.hasWarning && step.status === "completed" && "bg-grayscale-60 border-grayscale-60",
                   !step.hasWarning && step.status === "current" && "bg-background border-grayscale-60",
                   !step.hasWarning && step.status === "inactive" && "bg-background border-grayscale-20"
@@ -97,7 +97,7 @@ const ProjectStepper = ({ steps, className }: ProjectStepperProps) => {
                 className={cn(
                   "text-[10px] sm:text-small font-open-sans leading-tight",
                   "max-w-[55px] sm:max-w-[80px]",
-                  step.hasWarning && "text-status-warning font-semibold",
+                  step.hasWarning && "text-grayscale-60 font-semibold",
                   !step.hasWarning && step.status === "completed" && "text-grayscale-100 font-semibold",
                   !step.hasWarning && step.status === "current" && "text-grayscale-100 font-semibold",
                   !step.hasWarning && step.status === "inactive" && "text-grayscale-40"

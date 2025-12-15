@@ -50,17 +50,31 @@ const PROJECT_STEPS = [
 ];
 
 const getSteps = (currentStep: number, stepWarnings: number[] = []): Step[] => {
-  return PROJECT_STEPS.map((step, index) => ({
-    label: step.full,
-    shortLabel: step.short,
-    status:
-      index < currentStep
-        ? "completed"
-        : index === currentStep
-        ? "current"
-        : "inactive",
-    hasWarning: stepWarnings.includes(index),
-  }));
+  // Find the first step with warning to block progress
+  const firstWarningIndex = stepWarnings.length > 0 ? Math.min(...stepWarnings) : -1;
+  
+  return PROJECT_STEPS.map((step, index) => {
+    const hasWarning = stepWarnings.includes(index);
+    
+    // If there's a warning, steps after the first warning cannot be completed
+    let status: "completed" | "current" | "inactive";
+    if (firstWarningIndex >= 0 && index > firstWarningIndex) {
+      status = "inactive";
+    } else if (index < currentStep && !hasWarning) {
+      status = "completed";
+    } else if (index === currentStep || (hasWarning && index < currentStep)) {
+      status = "current";
+    } else {
+      status = "inactive";
+    }
+    
+    return {
+      label: step.full,
+      shortLabel: step.short,
+      status,
+      hasWarning,
+    };
+  });
 };
 
 const ProjectCard = ({
