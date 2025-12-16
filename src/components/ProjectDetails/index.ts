@@ -5,3 +5,5 @@ export { default as ExportButton } from "./ExportButton";
 export { default as ProjectHeader } from "./ProjectHeader";
 export { default as TeamSection } from "./TeamSection";
 export { default as TaskList } from "./TaskList";
+export { default as SectionTitle } from "./SectionTitle";
+export { default as ActivityList } from "./ActivityList";
