@@ -108,16 +108,6 @@ const ProjectDetailsPage = () => {
             </div>
           </div>
 
-          {/* Descrição */}
-          <div className="p-4 sm:p-6 border-b border-grayscale-20">
-            <h3 className="text-label-bold font-inter text-grayscale-80 mb-2">
-              Descrição
-            </h3>
-            <p className="text-body font-open-sans text-grayscale-70">
-              {project.description}
-            </p>
-          </div>
-
           {/* Grid de Métricas Financeiras */}
           <div className="p-4 sm:p-6 border-b border-grayscale-20">
             <h3 className="text-label-bold font-inter text-grayscale-80 mb-4">
@@ -167,9 +157,6 @@ const ProjectDetailsPage = () => {
             <TeamSection members={project.teamMembers} />
           </div>
         </div>
-
-        {/* Tarefas */}
-        <TaskList tasks={project.tasks} className="mb-6" />
 
         {/* Botão Exportar - Fixo em mobile */}
         <div className="sticky bottom-4 sm:relative sm:bottom-auto">
