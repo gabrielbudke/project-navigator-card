@@ -1,83 +1,71 @@
 import { useNavigate } from "react-router-dom";
-import ProjectCard, { ProjectStatus } from "@/components/ProjectCard";
-import { ProgressVariant } from "@/components/ProgressBar";
+import ProjectCard from "@/components/ProjectCard";
 import Header from "@/components/Header";
+import { useProjects } from "@/hooks/useProjects";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const navigate = useNavigate();
-
-  const projects: Array<{
-    id: string;
-    title: string;
-    subtitle: string;
-    status: ProjectStatus;
-    currentStep: number;
-    stepWarnings?: number[];
-    progress: number;
-    progressVariant: ProgressVariant;
-  }> = [
-    {
-      id: "1",
-      title: "00001-HCM-PETROBRAS-SAP",
-      subtitle: "Implantação SAP SuccessFactors",
-      status: "stable",
-      currentStep: 3,
-      progress: 65,
-      progressVariant: "stable",
-    },
-    {
-      id: "2",
-      title: "00002-HCM-VALE-FOLHA",
-      subtitle: "Modernização Folha de Pagamento",
-      status: "warning",
-      currentStep: 2,
-      stepWarnings: [1],
-      progress: 35,
-      progressVariant: "warning",
-    },
-    {
-      id: "3",
-      title: "00003-HCM-AMBEV-RH",
-      subtitle: "Gestão de Talentos",
-      status: "critical",
-      currentStep: 4,
-      stepWarnings: [2, 3],
-      progress: 15,
-      progressVariant: "critical",
-    },
-    {
-      id: "4",
-      title: "00004-HCM-ITAU-BENEFICIOS",
-      subtitle: "Portal de Benefícios",
-      status: "outdated",
-      currentStep: 5,
-      progress: 80,
-      progressVariant: "primary",
-    },
-  ];
-
-  
+  const { projects, isLoading, isError, error, refetch } = useProjects();
 
   return (
     <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
       <div className="max-w-4xl mx-auto">
         <Header title="Meus Projetos" />
 
-        <div className="space-y-3 sm:space-y-4">
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              subtitle={project.subtitle}
-              status={project.status}
-              currentStep={project.currentStep}
-              stepWarnings={project.stepWarnings}
-              progress={project.progress}
-              progressVariant={project.progressVariant}
-              onDetailsClick={() => navigate(`/projeto/${project.id}`)}
-            />
-          ))}
-        </div>
+        {isLoading && (
+          <div className="space-y-3 sm:space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-lg p-4 sm:p-6 shadow-sm">
+                <Skeleton className="h-6 w-3/4 mb-2" />
+                <Skeleton className="h-4 w-1/2 mb-4" />
+                <Skeleton className="h-8 w-full" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {isError && (
+          <div className="bg-white rounded-lg p-6 shadow-sm text-center">
+            <AlertCircle className="h-12 w-12 text-status-critical mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-grayscale-90 mb-2">
+              Erro ao carregar projetos
+            </h3>
+            <p className="text-grayscale-60 mb-4">
+              {error?.message || "Não foi possível carregar a lista de projetos."}
+            </p>
+            <Button onClick={() => refetch()} variant="outline">
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Tentar novamente
+            </Button>
+          </div>
+        )}
+
+        {!isLoading && !isError && projects.length === 0 && (
+          <div className="bg-white rounded-lg p-6 shadow-sm text-center">
+            <p className="text-grayscale-60">Nenhum projeto encontrado.</p>
+          </div>
+        )}
+
+        {!isLoading && !isError && projects.length > 0 && (
+          <div className="space-y-3 sm:space-y-4">
+            {projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                title={project.title}
+                subtitle={project.subtitle}
+                status={project.status}
+                currentStep={project.currentStep}
+                stepWarnings={project.stepWarnings}
+                progress={project.progress}
+                progressVariant={project.progressVariant}
+                onDetailsClick={() => navigate(`/projeto/${project.id}`)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );
