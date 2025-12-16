@@ -34,23 +34,54 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
         format: "a4",
       });
 
+      // Função auxiliar para normalizar texto (remove acentos para compatibilidade)
+      const normalizeText = (text: string): string => {
+        return text
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^\x00-\x7F]/g, (char) => {
+            const map: Record<string, string> = {
+              'ç': 'c', 'Ç': 'C',
+              'ã': 'a', 'Ã': 'A',
+              'õ': 'o', 'Õ': 'O',
+              'á': 'a', 'Á': 'A',
+              'é': 'e', 'É': 'E',
+              'í': 'i', 'Í': 'I',
+              'ó': 'o', 'Ó': 'O',
+              'ú': 'u', 'Ú': 'U',
+              'â': 'a', 'Â': 'A',
+              'ê': 'e', 'Ê': 'E',
+              'î': 'i', 'Î': 'I',
+              'ô': 'o', 'Ô': 'O',
+              'û': 'u', 'Û': 'U',
+              'à': 'a', 'À': 'A',
+              '≥': '>=',
+              '≤': '<=',
+            };
+            return map[char] || char;
+          });
+      };
+
       const pageWidth = 297;
       const margin = 15;
       let yPos = margin;
 
+      // Configura fonte padrão
+      pdf.setFont("helvetica", "normal");
+
       // === HEADER ===
       pdf.setFontSize(20);
       pdf.setTextColor(31, 41, 55);
-      pdf.text("Relatório de Cronograma", margin, yPos);
+      pdf.text(normalizeText("Relatorio de Cronograma"), margin, yPos);
       yPos += 8;
 
       pdf.setFontSize(14);
       pdf.setTextColor(107, 114, 128);
-      pdf.text(project.nome, margin, yPos);
+      pdf.text(normalizeText(project.nome), margin, yPos);
       yPos += 6;
 
       pdf.setFontSize(10);
-      pdf.text(`Período: ${formatDate(project.inicio)} - ${formatDate(project.fim)}`, margin, yPos);
+      pdf.text(normalizeText(`Periodo: ${formatDate(project.inicio)} - ${formatDate(project.fim)}`), margin, yPos);
       yPos += 10;
 
       // === LEGENDA ===
@@ -60,17 +91,17 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       // No Prazo
       pdf.setFillColor(34, 197, 94);
       pdf.rect(margin, yPos - 3, 4, 4, "F");
-      pdf.text("No Prazo (SPI ≥ 0.9)", margin + 6, yPos);
+      pdf.text("No Prazo (SPI >= 0.9)", margin + 6, yPos);
       
-      // Atenção
+      // Atencao
       pdf.setFillColor(245, 158, 11);
-      pdf.rect(margin + 50, yPos - 3, 4, 4, "F");
-      pdf.text("Atenção (0.7 ≤ SPI < 0.9)", margin + 56, yPos);
+      pdf.rect(margin + 55, yPos - 3, 4, 4, "F");
+      pdf.text("Atencao (0.7 <= SPI < 0.9)", margin + 61, yPos);
       
       // Atrasado
       pdf.setFillColor(239, 68, 68);
-      pdf.rect(margin + 115, yPos - 3, 4, 4, "F");
-      pdf.text("Atrasado (SPI < 0.7)", margin + 121, yPos);
+      pdf.rect(margin + 125, yPos - 3, 4, 4, "F");
+      pdf.text("Atrasado (SPI < 0.7)", margin + 131, yPos);
       yPos += 10;
 
       // === GRÁFICO DE GANTT ===
@@ -100,7 +131,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
         const monthDate = new Date(startDate);
         monthDate.setMonth(startDate.getMonth() + i);
         if (monthDate <= endDate) {
-          const monthLabel = monthDate.toLocaleDateString("pt-BR", { month: "short" });
+          const monthLabel = normalizeText(monthDate.toLocaleDateString("pt-BR", { month: "short" }));
           pdf.text(monthLabel, chartStartX + i * monthWidth + 2, yPos + 6);
         }
       }
@@ -123,7 +154,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
         // Nome da atividade
         pdf.setFontSize(7);
         pdf.setTextColor(31, 41, 55);
-        const actName = activityHealth.activity.nome.substring(0, 25);
+        const actName = normalizeText(activityHealth.activity.nome.substring(0, 25));
         pdf.text(actName, margin + 2, yPos + 5);
 
         // Barra do Gantt
@@ -155,7 +186,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       // === SEÇÃO DE OBSERVAÇÕES ===
       pdf.setFontSize(12);
       pdf.setTextColor(31, 41, 55);
-      pdf.text("Observações", margin, yPos);
+      pdf.text("Observacoes", margin, yPos);
       yPos += 8;
 
       // Métricas
@@ -166,7 +197,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       pdf.roundedRect(margin, yPos, metricWidth, 15, 2, 2, "F");
       pdf.setFontSize(8);
       pdf.setTextColor(22, 101, 52);
-      pdf.text("SPI Médio Ponderado", margin + 3, yPos + 5);
+      pdf.text("SPI Medio Ponderado", margin + 3, yPos + 5);
       pdf.setFontSize(14);
       pdf.text(report.spiMedioPonderado.toFixed(2), margin + 3, yPos + 12);
 
@@ -175,7 +206,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       pdf.roundedRect(margin + metricWidth + 5, yPos, metricWidth, 15, 2, 2, "F");
       pdf.setFontSize(8);
       pdf.setTextColor(146, 64, 14);
-      pdf.text("Desvio Padrão", margin + metricWidth + 8, yPos + 5);
+      pdf.text("Desvio Padrao", margin + metricWidth + 8, yPos + 5);
       pdf.setFontSize(14);
       pdf.text(report.desvioPadrao.toFixed(2), margin + metricWidth + 8, yPos + 12);
 
@@ -200,7 +231,7 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
         pdf.setFontSize(8);
         pdf.setTextColor(55, 65, 81);
         report.atividadesAtrasadas.forEach((ah) => {
-          const text = `• ${ah.activity.nome}: SPI ${ah.spi.toFixed(2)} - ${ah.activity.percentualAtingido}% atingido vs ${ah.activity.percentualPlanejado}% planejado`;
+          const text = normalizeText(`- ${ah.activity.nome}: SPI ${ah.spi.toFixed(2)} - ${ah.activity.percentualAtingido}% atingido vs ${ah.activity.percentualPlanejado}% planejado`);
           pdf.text(text, margin + 2, yPos);
           yPos += 4;
         });
@@ -211,13 +242,13 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       if (report.atividadesAtencao.length > 0) {
         pdf.setFontSize(10);
         pdf.setTextColor(217, 119, 6);
-        pdf.text(`Atividades em Atenção (${report.atividadesAtencao.length})`, margin, yPos);
+        pdf.text("Atividades em Atencao (" + report.atividadesAtencao.length + ")", margin, yPos);
         yPos += 5;
         
         pdf.setFontSize(8);
         pdf.setTextColor(55, 65, 81);
         report.atividadesAtencao.forEach((ah) => {
-          const text = `• ${ah.activity.nome}: SPI ${ah.spi.toFixed(2)} - ${ah.activity.percentualAtingido}% atingido vs ${ah.activity.percentualPlanejado}% planejado`;
+          const text = normalizeText(`- ${ah.activity.nome}: SPI ${ah.spi.toFixed(2)} - ${ah.activity.percentualAtingido}% atingido vs ${ah.activity.percentualPlanejado}% planejado`);
           pdf.text(text, margin + 2, yPos);
           yPos += 4;
         });
@@ -231,14 +262,14 @@ export const useExportSchedule = (project: ProjectData | null): UseExportSchedul
       
       pdf.setFontSize(8);
       pdf.setTextColor(75, 85, 99);
-      const summaryText = `Resumo: ${report.activities.length} atividades - ${report.atividadesNoPrazo.length} no prazo (${((report.atividadesNoPrazo.length / report.activities.length) * 100).toFixed(0)}%), ${report.atividadesAtencao.length} em atenção, ${report.atividadesAtrasadas.length} atrasadas.`;
+      const summaryText = normalizeText(`Resumo: ${report.activities.length} atividades - ${report.atividadesNoPrazo.length} no prazo (${((report.atividadesNoPrazo.length / report.activities.length) * 100).toFixed(0)}%), ${report.atividadesAtencao.length} em atencao, ${report.atividadesAtrasadas.length} atrasadas.`);
       pdf.text(summaryText, margin + 3, yPos + 7);
 
       // Rodapé
       yPos = 200;
       pdf.setFontSize(7);
       pdf.setTextColor(156, 163, 175);
-      pdf.text(`Relatório gerado em ${new Date().toLocaleDateString("pt-BR")} às ${new Date().toLocaleTimeString("pt-BR")}`, margin, yPos);
+      pdf.text(normalizeText(`Relatorio gerado em ${new Date().toLocaleDateString("pt-BR")} as ${new Date().toLocaleTimeString("pt-BR")}`), margin, yPos);
 
       // Salva o PDF
       const fileName = `relatorio-cronograma-${project.nome
