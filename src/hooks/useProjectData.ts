@@ -38,19 +38,19 @@ const generateSteps = (currentStep: number, stepWarnings: number[] = []): Step[]
 /**
  * Mapeia atividades da API para o formato interno
  */
-const mapActivities = (activities: {data: ResourcePlanActivity[]}): ProjectActivity[] => {
-  if(!activities.data) return []; 
+const mapActivities = (activities: ResourcePlanActivity[]): ProjectActivity[] => {
+  if(!activities) return []; 
 
-  return activities.data.map((activity) => ({
+  return activities.map((activity) => ({
     nome: activity.nome,
     numero: activity.numero,
-    profissional: activity.profissional,
+    profissional: activity.profissional_nome,
     inicio: activity.inicio,
     fim: activity.fim,
-    percentualAtingido: activity.percentualAtingido,
-    percentualPlanejado: activity.percentualPlanejado,
+    percentualAtingido: activity.perc_atingido,
+    percentualPlanejado: activity.perc_planejado,
     horasApontadas: activity.horasApontadas,
-    saldoHoras: activity.saldoHoras,
+    saldoHoras: activity.saldo_horas,
   }));
 };
 
@@ -59,25 +59,25 @@ const mapActivities = (activities: {data: ResourcePlanActivity[]}): ProjectActiv
  */
 const mapProjectToProjectData = (
   project: ProjectListItem,
-  activities: {data: ResourcePlanActivity[]}
+  activities: ResourcePlanActivity[]
 ): ProjectData => {
   return {
-    nome: project.title,
+    nome: project.nome,
     subtitle: project.subtitle,
-    numeroSNOW: project.id,
+    numeroSNOW: project.numero_snow,
     status: project.status,
     currentStep: project.currentStep,
     stepWarnings: project.stepWarnings || [],
-    inicio: "", // Será preenchido pela API de detalhes quando disponível
-    fim: "",
-    percentualConcluido: project.progress,
-    percentualPlanejado: 100, // Default até ter na API
-    valorVendido: 0,
-    valorAtingido: 0,
+    inicio: project.inicio, // Será preenchido pela API de detalhes quando disponível
+    fim: project.fim,
+    percentualConcluido: project.perc_concluido,
+    percentualPlanejado: project.perc_planejado, // Default até ter na API
+    valorVendido: project.vlr_vendido,
+    valorAtingido: project.vlr_atingido,
     rentabilidadePrevista: 0,
     rentabilidadeAtual: 0,
-    saldoHoras: 0,
-    reconhecido: 0,
+    saldoHoras: project.saldo_horas,
+    reconhecido: project.reconhecido,
     description: "",
     teamMembers: [],
     tasks: [],
@@ -105,9 +105,7 @@ export const useProjectData = (projectId: string | undefined): UseProjectDataRet
     queryKey: ["project", projectId],
     queryFn: () => projectService.getById(projectId),
     enabled: !!projectId,
-  });
-
-  
+  });  
 
   // Busca atividades do plano de recurso
   let {
@@ -120,15 +118,16 @@ export const useProjectData = (projectId: string | undefined): UseProjectDataRet
     enabled: !!projectId,
   });
 
-
   const isLoading = isLoadingProject || isLoadingActivities;
   const error = projectError || activitiesError;
 
+  console.log("activity", activities);
   // Monta o projeto completo com atividades
   const project = projectData
     ? mapProjectToProjectData(projectData, activities || [])
     : null;
 
+  
   // Gera os steps baseado no projeto
   const steps = project
     ? generateSteps(project.currentStep, project.stepWarnings)

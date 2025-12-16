@@ -17,7 +17,7 @@ export const resourcePlanService = {
       const response = await apiClient.get<ResourcePlanResponse>(
         `/resource-plans/${projectNumber}`
       );
-      return response;
+      return response.data;
     } catch (error) {
       const apiError = error as ApiError;
       if (apiError.status === 404) {

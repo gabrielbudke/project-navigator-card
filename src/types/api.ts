@@ -41,16 +41,19 @@ export type ProjectsApiResponse = ProjectListItem[];
 export interface ResourcePlanActivity {
   nome: string;
   numero: string;
-  profissional: string;
+  profissional_nome: string;
   inicio: string;
   fim: string;
-  percentualAtingido: number;
-  percentualPlanejado: number;
+  perc_atingido: number;
+  perc_planejado: number;
   horasApontadas: number;
-  saldoHoras: number;
+  saldo_horas: number;
 }
 
+export interface ResourcePlanActivities {
+  data: ResourcePlanActivity[];
+}
 /**
  * Resposta da API de plano de recurso
  */
-export type ResourcePlanResponse = ResourcePlanActivity[];
+export type ResourcePlanResponse = ResourcePlanActivities;
