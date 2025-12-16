@@ -20,8 +20,22 @@ const ProjectDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { project, steps, error } = useProjectData(id);
+  const { project, steps, error, isLoading } = useProjectData(id);
   const { isExporting, exportSchedule } = useExportSchedule(project);
+
+  // Estado de carregamento
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-grayscale-20 rounded w-1/3 mx-auto mb-4"></div>
+            <div className="h-4 bg-grayscale-20 rounded w-1/2 mx-auto"></div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   // Estado de erro/não encontrado
   if (error || !project) {
