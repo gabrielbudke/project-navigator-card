@@ -16,6 +16,7 @@ export const formatCurrency = (value: number): string => {
  * Formata percentual com símbolo % e até 2 casas decimais
  */
 export const formatPercentage = (value: number): string => {
+  if(!value) return '0';
   return `${value.toFixed(1).replace('.', ',')}%`;
 };
 

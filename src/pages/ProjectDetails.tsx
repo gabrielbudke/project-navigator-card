@@ -22,7 +22,7 @@ const ProjectDetailsPage = () => {
 
   const { project, steps, error, isLoading } = useProjectData(id);
 
-//  const { isExporting, exportSchedule } = useExportSchedule(project);
+  const { isExporting, exportSchedule } = useExportSchedule(project);
 
   // Estado de carregamento
   if (isLoading) {
@@ -57,8 +57,8 @@ const ProjectDetailsPage = () => {
     project.rentabilidadeAtual >= project.rentabilidadePrevista
       ? "success"
       : project.rentabilidadeAtual >= project.rentabilidadePrevista * 0.8
-      ? "warning"
-      : "danger";
+        ? "warning"
+        : "danger";
 
   return (
     <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">

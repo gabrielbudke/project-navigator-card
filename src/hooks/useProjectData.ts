@@ -38,8 +38,10 @@ const generateSteps = (currentStep: number, stepWarnings: number[] = []): Step[]
 /**
  * Mapeia atividades da API para o formato interno
  */
-const mapActivities = (activities: ResourcePlanActivity[]): ProjectActivity[] => {
-  return activities.map((activity) => ({
+const mapActivities = (activities: {data: ResourcePlanActivity[]}): ProjectActivity[] => {
+  if(!activities.data) return []; 
+
+  return activities.data.map((activity) => ({
     nome: activity.nome,
     numero: activity.numero,
     profissional: activity.profissional,
@@ -57,7 +59,7 @@ const mapActivities = (activities: ResourcePlanActivity[]): ProjectActivity[] =>
  */
 const mapProjectToProjectData = (
   project: ProjectListItem,
-  activities: ResourcePlanActivity[]
+  activities: {data: ResourcePlanActivity[]}
 ): ProjectData => {
   return {
     nome: project.title,
@@ -105,10 +107,10 @@ export const useProjectData = (projectId: string | undefined): UseProjectDataRet
     enabled: !!projectId,
   });
 
-
+  
 
   // Busca atividades do plano de recurso
-  const {
+  let {
     data: activities,
     isLoading: isLoadingActivities,
     error: activitiesError,
@@ -117,6 +119,7 @@ export const useProjectData = (projectId: string | undefined): UseProjectDataRet
     queryFn: () => resourcePlanService.getByProjectNumber(projectId!),
     enabled: !!projectId,
   });
+
 
   const isLoading = isLoadingProject || isLoadingActivities;
   const error = projectError || activitiesError;
