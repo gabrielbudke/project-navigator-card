@@ -21,7 +21,8 @@ const ProjectDetailsPage = () => {
   const navigate = useNavigate();
 
   const { project, steps, error, isLoading } = useProjectData(id);
-  const { isExporting, exportSchedule } = useExportSchedule(project);
+
+//  const { isExporting, exportSchedule } = useExportSchedule(project);
 
   // Estado de carregamento
   if (isLoading) {

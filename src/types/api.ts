@@ -9,6 +9,10 @@ import { ProjectStatus } from "./project";
  */
 export interface ProjectListItem {
   id: string;
+  nome: string;
+  numero_snow: string;
+  inicio: string;
+  fim: string;
   title: string;
   subtitle: string;
   status: ProjectStatus;
@@ -16,6 +20,14 @@ export interface ProjectListItem {
   stepWarnings?: number[];
   progress: number;
   progressVariant: "primary" | "stable" | "warning" | "critical";
+  perc_concluido: number;
+  perc_planejado: number;
+  vlr_vendido: number;
+  vlr_atingido: number;
+  rent_prevista: number;
+  rent_atual: number;
+  saldo_horas: number;
+  reconhecido: number;
 }
 
 /**

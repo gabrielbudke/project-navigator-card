@@ -54,7 +54,7 @@ const Index = () => {
             {projects.map((project) => (
               <ProjectCard
                 key={project.id}
-                title={project.title}
+                title={project.nome}
                 subtitle={project.subtitle}
                 status={project.status}
                 currentStep={project.currentStep}

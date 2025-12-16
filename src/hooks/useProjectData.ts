@@ -101,9 +101,11 @@ export const useProjectData = (projectId: string | undefined): UseProjectDataRet
     error: projectError,
   } = useQuery({
     queryKey: ["project", projectId],
-    queryFn: () => projectService.getById(projectId!),
+    queryFn: () => projectService.getById(projectId),
     enabled: !!projectId,
   });
+
+
 
   // Busca atividades do plano de recurso
   const {

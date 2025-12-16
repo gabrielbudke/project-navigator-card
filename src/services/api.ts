@@ -45,6 +45,7 @@ class HttpClient {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer CrcH1Cix2fDzj032JU2srs9UCdv2HqIr"
       },
     });
 
