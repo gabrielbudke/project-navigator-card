@@ -12,7 +12,7 @@ interface HeaderProps {
   className?: string;
 }
 
-const Header = ({ title, breadcrumbs = [], className }: HeaderProps) => {
+const Header = ({ title, className }: HeaderProps) => {
   return (
     <header className={cn("mb-6 sm:mb-8", className)}>
       <h1 className="text-h1 font-inter mb-2">

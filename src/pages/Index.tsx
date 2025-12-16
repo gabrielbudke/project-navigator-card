@@ -6,12 +6,6 @@ import Header from "@/components/Header";
 const Index = () => {
   const navigate = useNavigate();
 
-  const breadcrumbs = [
-    { label: "Módulos", href: "/" },
-    { label: "Gestão", href: "/" },
-    { label: "Projetos" },
-  ];
-
   const projects: Array<{
     id: string;
     title: string;
@@ -62,10 +56,12 @@ const Index = () => {
     },
   ];
 
+  
+
   return (
     <main className="min-h-screen bg-grayscale-5 px-4 py-6 sm:p-8">
       <div className="max-w-4xl mx-auto">
-        <Header title="Meus Projetos" breadcrumbs={breadcrumbs} />
+        <Header title="Meus Projetos" />
 
         <div className="space-y-3 sm:space-y-4">
           {projects.map((project) => (
