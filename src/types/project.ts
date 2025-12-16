@@ -9,6 +9,18 @@ export interface ProjectTask {
   completed: boolean;
 }
 
+export interface ProjectActivity {
+  nome: string;
+  numero: string;
+  profissional: string;
+  inicio: string;
+  fim: string;
+  percentualAtingido: number;
+  percentualPlanejado: number;
+  horasApontadas: number;
+  saldoHoras: number;
+}
+
 export interface ProjectData {
   nome: string;
   subtitle: string;
@@ -29,4 +41,5 @@ export interface ProjectData {
   description: string;
   teamMembers: string[];
   tasks: ProjectTask[];
+  activities: ProjectActivity[];
 }

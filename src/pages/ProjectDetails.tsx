@@ -9,8 +9,8 @@ import {
   MetricCard,
   DateRange,
   TeamSection,
-  TaskList,
   ExportButton,
+  ActivityList,
 } from "@/components/ProjectDetails";
 import { useProjectData } from "@/hooks/useProjectData";
 import { useExportSchedule } from "@/hooks/useExportSchedule";
@@ -157,6 +157,9 @@ const ProjectDetailsPage = () => {
             <TeamSection members={project.teamMembers} />
           </div>
         </div>
+
+        {/* Seção de Atividades */}
+        <ActivityList activities={project.activities} className="mb-6" />
 
         {/* Botão Exportar - Fixo em mobile */}
         <div className="sticky bottom-4 sm:relative sm:bottom-auto">
