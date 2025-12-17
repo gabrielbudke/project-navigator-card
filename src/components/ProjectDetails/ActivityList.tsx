@@ -52,7 +52,7 @@ const ActivityCard = ({ activity }: ActivityCardProps) => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
         <ActivityField label="Início" value={formatDate(activity.inicio)} />
         <ActivityField label="Fim" value={formatDate(activity.fim)} />
-        <ActivityField label="Horas Apontadas" value={formatHours(activity.horasApontadas)} />
+        <ActivityField label="Horas Apontadas" value={formatHours(activity.horasApontadas || 0)} />
         <ActivityField label="Saldo de Horas" value={formatHours(activity.saldoHoras)} />
       </div>
 
