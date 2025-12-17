@@ -10,7 +10,7 @@ interface ProjectCardProps {
   title: string;
   subtitle: string;
   status: ProjectStatus;
-  currentStep: number;
+  currentStep: string;
   stepWarnings?: number[];
   progress?: number;
   progressVariant?: ProgressVariant;
@@ -49,7 +49,10 @@ const PROJECT_STEPS = [
   { full: "Encerrado", short: "Encerr." },
 ];
 
-const getSteps = (currentStep: number, stepWarnings: number[] = []): Step[] => {
+const getSteps = (currentStep: string, stepWarnings: number[] = []): Step[] => {
+  // Find the index of the current step by matching the full description
+  const currentStepIndex = PROJECT_STEPS.findIndex(step => step.full === currentStep);
+  
   // Find the first step with warning to block progress
   const firstWarningIndex = stepWarnings.length > 0 ? Math.min(...stepWarnings) : -1;
   
@@ -60,9 +63,9 @@ const getSteps = (currentStep: number, stepWarnings: number[] = []): Step[] => {
     let status: "completed" | "current" | "inactive";
     if (firstWarningIndex >= 0 && index > firstWarningIndex) {
       status = "inactive";
-    } else if (index < currentStep && !hasWarning) {
+    } else if (index < currentStepIndex && !hasWarning) {
       status = "completed";
-    } else if (index === currentStep || (hasWarning && index < currentStep)) {
+    } else if (index === currentStepIndex || (hasWarning && index <= currentStepIndex)) {
       status = "current";
     } else {
       status = "inactive";

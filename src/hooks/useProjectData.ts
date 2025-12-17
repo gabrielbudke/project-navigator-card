@@ -9,7 +9,10 @@ import { resourcePlanService } from "@/services/resourcePlanService";
 /**
  * Gera os steps do stepper baseado no estado atual
  */
-const generateSteps = (currentStep: number, stepWarnings: number[] = []): Step[] => {
+const generateSteps = (currentStep: string, stepWarnings: number[] = []): Step[] => {
+  // Find the index of the current step by matching the full description
+  const currentStepIndex = PROJECT_STEPS.findIndex(step => step.full === currentStep);
+  
   const firstWarningIndex = stepWarnings.length > 0 ? Math.min(...stepWarnings) : -1;
 
   return PROJECT_STEPS.map((step, index) => {
@@ -18,9 +21,9 @@ const generateSteps = (currentStep: number, stepWarnings: number[] = []): Step[]
     let status: "completed" | "current" | "inactive";
     if (firstWarningIndex >= 0 && index > firstWarningIndex) {
       status = "inactive";
-    } else if (index < currentStep && !hasWarning) {
+    } else if (index < currentStepIndex && !hasWarning) {
       status = "completed";
-    } else if (index === currentStep || (hasWarning && index < currentStep)) {
+    } else if (index === currentStepIndex || (hasWarning && index <= currentStepIndex)) {
       status = "current";
     } else {
       status = "inactive";
@@ -66,7 +69,7 @@ const mapProjectToProjectData = (
     subtitle: project.subtitle,
     numeroSNOW: project.numero_snow,
     status: project.status,
-    currentStep: project.currentStep,
+    currentStep: project.etapa,
     stepWarnings: project.stepWarnings || [],
     inicio: project.inicio, // Será preenchido pela API de detalhes quando disponível
     fim: project.fim,

@@ -57,7 +57,7 @@ const Index = () => {
                 title={project.nome}
                 subtitle={project.subtitle}
                 status={project.status}
-                currentStep={project.currentStep}
+                currentStep={project.etapa}
                 stepWarnings={project.stepWarnings}
                 progress={project.progress}
                 progressVariant={project.progressVariant}

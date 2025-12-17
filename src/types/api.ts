@@ -16,7 +16,7 @@ export interface ProjectListItem {
   title: string;
   subtitle: string;
   status: ProjectStatus;
-  currentStep: number;
+  etapa: string;
   stepWarnings?: number[];
   progress: number;
   progressVariant: "primary" | "stable" | "warning" | "critical";

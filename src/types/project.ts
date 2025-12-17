@@ -26,7 +26,7 @@ export interface ProjectData {
   subtitle: string;
   numeroSNOW: string;
   status: ProjectStatus;
-  currentStep: number;
+  currentStep: string;
   stepWarnings: number[];
   inicio: string;
   fim: string;
